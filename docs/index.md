@@ -81,12 +81,12 @@ along with an extended graphql query in the http header {X-Meshcal}:
 
 ```graphql
 query {
-    items @GET(fragment:"details", type="employee", href:"https://employees.corporate.com/${employee_id}") : 
+    items @GET(fragment:"details", type:"employee", href:"https://employees.corporate.com/${employee_id}") : 
         { employee_id }
 }
 
 fragment details on employee 
-@GET(fragment:"contract_details", type="bike_contract" href="https://bike-contracts.corporate.com/${bike_contract_nr}")
+@GET(fragment:"contract_details", type:"bike_contract" href:"https://bike-contracts.corporate.com/${bike_contract_nr}")
 { name, first_name }
 
 fragment contract_details on bike_contract
