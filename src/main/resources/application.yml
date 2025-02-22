@@ -1,0 +1,14 @@
+proxy.config:
+  mappings:
+    # surround RegEx string with "[" and "]" so that spring doesn't apply
+    # relaxed binding @see https://github.com/spring-projects/spring-boot/wiki/Relaxed-Binding-2.0
+    '[http://localhost:8080/jsonplaceholder/(.*)]': 'https://jsonplaceholder.typicode.com/$1'
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - info
+          - env
