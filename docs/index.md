@@ -114,29 +114,29 @@ As a result the Meshcaline Proxy will respond the following body:
 ```json
 [
     { 
-        url : 'https://search.corporate.com/emplyees?manager=17
-        body : {
-            items: [
-                { employee_id : 1234, details : { href:'https://employees.corporate.com/1234' } },
-                { employee_id : 2345, details : { href:'https://employees.corporate.com/2345' } }
+        "url" : "https://search.corporate.com/emplyees?manager=17",
+        "body" : {
+            "items": [
+                { "employee_id" : 1234, "details" : { "href":"https://employees.corporate.com/1234" } },
+                { "employee_id" : 2345, "details" : { "href":"https://employees.corporate.com/2345" } }
             ]
         }
     },
     { 
-        url : href:'https://employees.corporate.com/1234'
-        body : { name : "Frank", last_name: "Jackson", contract_details : { href:'https://bike-contracts.corporate.com/17' } }
+        "url" : "https://employees.corporate.com/1234",
+        "body" : { "name" : "Frank", "last_name": "Jackson", "contract_details" : { "href":"https://bike-contracts.corporate.com/17" } }
     },
     { 
-        url : href:'https://employees.corporate.com/2345',
-        body : { name : "Peter", last_name: "Myers", contract_details : { href:'https://bike-contracts.corporate.com/35' } }
+        "url" : "https://employees.corporate.com/2345",
+        "body" : { "name" : "Peter", "last_name": "Myers", "contract_details" : { "href":"https://bike-contracts.corporate.com/35" } }
     },
     { 
-        url : href:'https://bike-contracts.corporate.com/35',
-        body : { contract_number: 35, start_date: '2024-08-12', end_date: '2027-08-11', bike_type: 'city' , monthly_rate: 1800 }
+        "url" : "https://bike-contracts.corporate.com/35",
+        "body" : { "contract_number": 35, "start_date": "2024-08-12", "end_date": "2027-08-11", "bike_type": "city" , "monthly_rate": 1800 }
     },
     { 
-        url : href:'https://bike-contracts.corporate.com/17',
-        body : { contract_number: 35, start_date: '2024-05-01', end_date: '2027-04-30', bike_type: 'tracking' , monthly_rate: 2100 }
+        "url" : "https://bike-contracts.corporate.com/17",
+        "body" : { "contract_number": 35, "start_date": "2024-05-01", "end_date": "2027-04-30", "bike_type": "tracking" , "monthly_rate": 2100 }
     }
 ]
 ```
