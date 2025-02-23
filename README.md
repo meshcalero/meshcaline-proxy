@@ -1,3 +1,4 @@
+
 # Welcome to the Meshcaline Proxy project!
 
 This project provides a HTTP proxy implementation that support providers of webservice API as well as application 
@@ -35,7 +36,7 @@ with `X-MESHCALINE-QUERY` set to
 query users @GET(fragment:"user", href: "./${id}") 
     { id } 
 fragment user on user 
-    { id,email } 
+    { id, email } 
 ```
 
 You have to disable Postman's default header `Accept-Encoding` as the proxy doesn't yet support 

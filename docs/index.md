@@ -5,79 +5,87 @@ title: Overview
 
 # Welcome to Meshcaline Proxy!
 
-Meshcaline Proxy's mission is to enable the transformation from the 
-programmable web to a composable web. 
+Meshcaline Proxy's mission is to enable the transformation from the **programmable web** to a **composable web**.
 
-It addresses two audiences: API providers and Application developers.
+It serves two primary audiences:
+- **API Providers**
+- **Application Developers**
 
-The main goal of the Meshcaline Proxy is to provide the advantages of backend-to-frontend [backend-for-frontend (BFF) services](https://samnewman.io/patterns/architectural/bff/) without inheriting
-their downsides (see [Why Meshcaline Proxy](why.md)).
+## Why Meshcaline Proxy?
 
-Meshcaline Proxy does this by providing a generic HTTP proxy implementation that enables a universal BFF implementation 
-via an infrastructure component that is agnostic to the specific webservice API that serve client applications.
+Meshcaline Proxy provides the benefits of **backend-for-frontend (BFF) services** without inheriting their downsides.  
+For details, see [Why Meshcaline Proxy](why.md).
 
-The key characteristics of the Meshcaline Proxy are:
-* It operates on plain HTTP semantics
-* Any existing HTTP WebService API can be used with Meshcaline Proxy, without any adjustments.
-* Client requests only require an optional extension to use Meshcaline Proxy's capabilities; when 
-  missing, the original request is proxied transparently.
-* It leverages GraphQL's query language to let client applications filter the size of responses down to their needs
-* It extends GraphQL's query language to enable dynamic composition of arbitrary API calls into a single response,
-  specific to the needs of the calling client application
-* Special treatment for webservice API implementations that follow the
-  [Meshcaline design principles](https://meshcaline.org) significantly simplifies the 
-  composition for client applications
-* It leverages a streaming architecture, optimized for minimal latency and supporting 
-  reactive client application implementations 
+### How It Works
 
-You find the Meshcaline Proxy on [Github](https://github.com/meshcalero/meshcaline-proxy)
+Meshcaline Proxy is a **generic HTTP proxy** that enables a **universal BFF implementation** as an **infrastructure component**,  
+agnostic to the web service APIs it serves.
 
-### Example Scenarios
+## Key Characteristics
 
-Let's use a few hypothetical, but hopefully realistic scenarios to describe how Meshcaline Proxy works.
+- Operates on **plain HTTP semantics**.
+- Works with **any existing HTTP WebService API**—no adjustments needed.
+- Clients can use Meshcaline Proxy **optionally**; if not used, requests are transparently proxied.
+- Uses **GraphQL query language** to let clients filter response sizes based on their needs.
+- Extends **GraphQL** to dynamically compose multiple API calls into a **single** response.
+- **Optimized for minimal latency** with a streaming architecture, supporting **reactive client applications**.
+- Special **Meshcaline design principles** simplify composition for client applications.  
+  (See [Meshcaline Design Principles](https://meshcaline.org))
 
-#### Scenario 1: Corporate App
+🔗 **Find Meshcaline Proxy on [GitHub](https://github.com/meshcalero/meshcaline-proxy)**
 
-Let's assume a large corporate has built an app that allows their employees to manage all their administrative 
-duties with the company. The app leverages various company microservices including an employee search microservice and 
-an employee details microservice. A recently launched new service does allow to manage contractual details 
-for the new company bike offering.
-The bike offering team has convinced the App team that managers need to see their employee's bike-contract, and the
-App team would love to add the corresponding feature.
-Since the company is using (for for many valid reasons) a BFF architecture, the App doesn't directly access 
-the various corporate microservices. Instead all request go through a BFF service managed by a 3rd team. 
-So the App team asks the BFF team to provide a new endpoint that encapsulates the following functionality:
+---
 
-1. search for all employees of a given manager via the employee search service
-1. retrieve the details for all those employees from the employee details service
-1. take the bike-contract number from the employee record and retrieve the contract details from the bike-contract service 
-2. Return the list of contract details along with a subset of employee details required for displaying the results in the app.
+## Example Scenario: Corporate App
 
-Unfortunately the team owning with BFF service is a bottleneck for the app development and is overwhelmed 
-with feature requests. Since many of those are considered more important than supporting bike contracts, the request
-gets on the backlog and it is unlikely that it will be prioritized in the next few quarters.
+Let’s explore a real-world scenario where Meshcaline Proxy provides a powerful alternative to traditional BFFs.
 
-The App team considers bypassing the BFF service, but this would not only violate some fundamental design, it would
-also introduce various client server round-trips. Those would result in high latency and a non-responsive application 
-(avoiding this latency is one of the main reasons for the BFF architecture). Consequently app team decided to not
-go down that route and wait for a slot on the BFF team's roadmap. 
+### The Problem
 
-How would Meshcaline Proxy help in that scenario?
+A **large corporation** has built an app for employees to manage administrative tasks.  
+The app uses **multiple microservices**, including:
+- **Employee Search Service**
+- **Employee Details Service**
+- **Bike Contract Service** (for a new company bike leasing program)
 
-By leveraging Meshcaline Proxy's query extensions, the app team would have been able to specify their feature request as a 
-dynamic request to Meshcaline Proxy.
+The **bike team** wants to display employees' **bike contracts** in the app.  
+However, all requests go through a **BFF service**, managed by a separate team.
 
-Let's assume the three microservice endpoints that have to be composed for the feature are
-* https://search.corporate.com/emplyees?manager=${manager_employee_id}
-* https://employees.corporate.com/${employee_id}
-* https://bike-contracts.corporate.com/${contract_id}
+### The Bottleneck
 
-When Meshcaline Proxy is configured as reverse proxy for all three services, then the App team would trigger a regular 
-HTTP request to the employee search service with 
+The App team requests the **BFF team** to create a new endpoint to:
+1. Search employees of a given manager.
+2. Retrieve employee details.
+3. Fetch bike contract details for each employee.
+4. Return **only** the required fields for the UI.
+
+🚨 **Problem:**  
+The BFF team is overwhelmed with feature requests, and this one gets **backlogged for months**.
+
+Bypassing the BFF service would introduce:
+- **High latency** (due to multiple client-server round trips).
+- **Design violations** of the existing architecture.
+
+### The Meshcaline Proxy Solution
+
+With **Meshcaline Proxy**, the app team can define their data needs dynamically—without waiting on the BFF team.
+
+#### Microservice Endpoints
+
+Assume the following microservice endpoints:
+- **Employee Search:**  
+  `GET https://search.corporate.com/employees?manager=${manager_employee_id}`
+- **Employee Details:**  
+  `GET https://employees.corporate.com/${employee_id}`
+- **Bike Contract Details:**  
+  `GET https://bike-contracts.corporate.com/${contract_id}`
+
+#### The Request Using Meshcaline Proxy
+
 ```
 GET https://search.corporate.com/emplyees?manager=${manager_employee_id}
 ```
-along with an extended graphql query in the http header `X-MESHCALINE-QUERY`:
+along with an extended graphql query in the HTTP header `X-MESHCALINE-QUERY`:
 
 ```graphql
 query {
@@ -92,24 +100,29 @@ fragment details on employee
 fragment contract_details on bike_contract
 { contract_number, start_date, end_date, bike_type, monthly_rate }
 ```
+This query specifies that:
+- The **employee search service** response should be reduced to `employee_id`.
+- Additional requests should be made for **employee details** and **bike contract details** dynamically.
 
-When Meshcaline Proxy receives this request it does the following:
-* It extracts the graphQL query from the HTTP header `X-MESHCALINE-QUERY`
-* It forwards the request to the search service
-* When receiving response, it applies the main graphql query on the response body. It detects in the respose the items array 
-  references the main query's selection set. For each item it does two things:
-  * apply the specified graphQL selection set and with that reduce a returned item object to just an employee_id 
-  * detect Meshcaline Proxy's GET directive and construct a new HTTP GET request to the employee details service. For this request
-    it constructs the URL by applying the values of the current item to the URL-template of the directives href argument.
-* While Meshcaline Proxy starts steaming back the transformed result of the proxied search request, it executes the constructed
-  HTTP requests to the employee details service.
-* As those responses reach the proxy, it does again two things for each response:
-  * filter down the response by applying the selection set of the fragment and type that was referenced by the @GET directive (here "details" and "employee") to just name and first_name of the employee
-  * construct a new downstream HTTP request to retrieve the details of the bike_contract
-* Also the responses of those additional downstream requests get filtered to the requested attribute, but since there is no additional 
-  Meshcaline directive, those responses trigger no futher subrequests.
+### How Meshcaline Proxy Processes This Request
 
-As a result the Meshcaline Proxy will respond the following body:
+1. Extracts the **GraphQL query** from the `X-MESHCALINE-QUERY` HTTP header.
+2. Forwards the request to the **Employee Search Service**.
+3. Parses the **response** and:
+  - Filters it to return only `employee_id`.
+  - Detects the `@GET` directive and **requests employee details** for each employee.
+4. Upon receiving **employee details**, it:
+  - Filters for `name` and `first_name`.
+  - Detects the **bike contract reference** and fetches contract details.
+5. Finally, **bike contract details** are retrieved and filtered as requested.
+
+### The Response
+
+The response is a **structured list** of microservice responses, including employee details and contract information.
+
+Each response element contains:
+- The **URL** of the microservice request.
+- The **filtered** response body.
 
 ```json
 [
@@ -140,25 +153,25 @@ As a result the Meshcaline Proxy will respond the following body:
     }
 ]
 ```
-
-This response is a composition of the filtered responses of each microservice request required to construct the response.
-The composition is represented as a list of HTTP responses, each represented by at least the URL of the HTTP resource and
-the filtered body of the response.
-
-Each content element in any of the responses that is annotated in the graphQL query with one of Meshcaline Proxy's 
-subrequest directives (here @GET) is enriched with a minimal
-[Meshcaline hypertext control](https://meshcaline.org/basics/#hypertext-controls) that defined the subrequest and uses the
-name of the graphQL's fragment used to process the response. 
-
-Contrary to most other BFF implementations, Meshcaline Proxy doesn't hide the services that contribute to the business process
-that a client application wants to implement. The philosophy behind Meshcaline Proxy is to treat microservice as first 
-class citizens that applications directly interact with (see more in [Why Meshcaline Proxy](why.md)).
-
 The list of responses does not have a specific order. It is only guaranteed that responses of subrequests arrive later
 than the response they originate from.
 
-Since the response is streamed back to the App, applications can leverage streaming parsers. This allows building a responsive UI,
-where the App already start displaying individual content elements (e.g displaying the employee names) before the full response
-has been arrived.
+### Why This Matters
+
+🚀 **Streaming Response**
+- Responses are **streamed incrementally**.
+- The UI can start rendering **before all data arrives**.
+
+📦 **Efficient Composition**
+- The app **avoids direct calls to each microservice**.
+- No need to modify existing APIs.
+
+🌐 **Preserves API Transparency**
+- Unlike traditional BFFs, Meshcaline Proxy **does not hide microservices**.
+- Applications **interact directly** with microservices.
+
+For more details, see [Why Meshcaline Proxy](why.md).  
+
+
 
 
