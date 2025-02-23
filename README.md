@@ -32,7 +32,7 @@ GET http://localhost:8080/jsonplaceholder/users/
 ```
 with `X-MESHCALINE-QUERY` set to
 ```
-query users @GET(fragment:"user", url: "./${id}") 
+query users @GET(fragment:"user", href: "./${id}") 
     { id } 
 fragment user on user 
     { id,email } 

@@ -242,13 +242,13 @@ public class ProxyQueryProcessor {
             .ifPresent( dir -> {
                 final String fragmentName = findDirectiveArgumentValue(dir, "fragment")
                     .orElseThrow( () -> new IllegalArgumentException("missing fragment argument for GET directive of field "+ fieldName) );
-                final String uriTemplate = Optional.ofNullable(fieldValue.get("url"))
+                final String uriTemplate = Optional.ofNullable(fieldValue.get("href"))
                     .map(JsonNode::asText)
-                    .or( () -> findDirectiveArgumentValue(dir, "url") )
-                    .orElseThrow( () -> new IllegalArgumentException("missing url attribute for GET directive of field "+ fieldName) );
+                    .or( () -> findDirectiveArgumentValue(dir, "href") )
+                    .orElseThrow( () -> new IllegalArgumentException("missing href attribute for GET directive of field "+ fieldName) );
                 final String uri = new StringSubstitutor(key -> fieldValue.get(key).asText()) //TODO: Handle nested fields
                     .replace(uriTemplate);
-                final Optional<String> fragmentTypeOpt = findDirectiveArgumentValue(dir, "fragmentType");
+                final Optional<String> fragmentTypeOpt = findDirectiveArgumentValue(dir, "type");
                 final FragmentDefinition fragment =
                     searchApplicableFragment(document, fragmentName, fragmentTypeOpt)
                         .orElseThrow( () -> new IllegalArgumentException("missing fragment " + fragmentName ) );
