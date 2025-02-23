@@ -30,7 +30,7 @@ The key characteristics of the Meshcaline Proxy are:
 * It leverages a streaming architecture, optimized for minimal latency and supporting 
   reactive client application implementations 
 
-You can find the proxy on [Github](https://github.com/meshcalero/meshcaline-proxy)
+You find the Meshcaline Proxy on [Github](https://github.com/meshcalero/meshcaline-proxy)
 
 ### Example Scenarios
 
@@ -77,7 +77,7 @@ HTTP request to the employee search service with
 ```
 GET https://search.corporate.com/emplyees?manager=${manager_employee_id}
 ```
-along with an extended graphql query in the http header {X-Meshcal}:
+along with an extended graphql query in the http header `X-MESHCALINE-QUERY`:
 
 ```graphql
 query {
@@ -94,14 +94,14 @@ fragment contract_details on bike_contract
 ```
 
 When Meshcaline Proxy receives this request it does the following:
-* It extracts the mescal query from the HTTP header
+* It extracts the graphQL query from the HTTP header `X-MESHCALINE-QUERY`
 * It forwards the request to the search service
 * When receiving response, it applies the main graphql query on the response body. It detects in the respose the items array 
   references the main query's selection set. For each item it does two things:
   * apply the specified graphQL selection set and with that reduce a returned item object to just an employee_id 
   * detect Meshcaline Proxy's GET directive and construct a new HTTP GET request to the employee details service. For this request
     it constructs the URL by applying the values of the current item to the URL-template of the directives href argument.
-* While Meshcaline proxy starts steaming back the transformed result of the proxied search request, it executes the constructed
+* While Meshcaline Proxy starts steaming back the transformed result of the proxied search request, it executes the constructed
   HTTP requests to the employee details service.
 * As those responses reach the proxy, it does again two things for each response:
   * filter down the response by applying the selection set of the fragment and type that was referenced by the @GET directive (here "details" and "employee") to just name and first_name of the employee
