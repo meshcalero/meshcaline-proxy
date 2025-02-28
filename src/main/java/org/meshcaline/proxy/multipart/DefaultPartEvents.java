@@ -1,4 +1,18 @@
 /*
+ * This file is part of the *meshcaline proxy* project.
+ *
+ * The file contains a reduced version of the
+ * org.springframework.http.codec.multipart.DefaultPartEvents class of the spring framework
+ *
+ * Copying the file was necessary as a workaround to the visibility restrictions of the implementation
+ * within the springframework project.
+ *
+ * The original copyright notices remains valid for this single file, but not for any other
+ * file of the *meshcaline proxy* project.
+ */
+
+
+/*
  * Copyright 2002-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
